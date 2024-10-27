@@ -32,4 +32,10 @@ public class CustomerUsersDetailsService implements UserDetailsService {
         else
             throw new UsernameNotFoundException("User not found.");
     }
+
+    public com.inn.coffee.POJO.User getUserDetail() {
+        com.inn.coffee.POJO.User user = userDetail;
+        user.setPassword(null);
+        return userDetail;
+    }
 }
