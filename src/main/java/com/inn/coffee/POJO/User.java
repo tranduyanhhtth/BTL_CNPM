@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
 
-@NamedQuery(name = "User.getAllUser", query = "select u.email from User u where u.role='admin'")
+@NamedQuery(name = "User.getAllUsers", query = "select u.email from User u where u.role='admin'")
 
 @Data
 @Entity
