@@ -19,7 +19,6 @@ import java.util.Objects;
 @Service
 public class CustomerUsersDetailsService implements UserDetailsService {
 
-    private static final Logger log = LogManager.getLogger(CustomerUsersDetailsService.class);
     @Autowired
     UserDao userDao;
 

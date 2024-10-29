@@ -11,7 +11,6 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Bill.getBillByUserName", query = "select b from Bill b where b.createBy=:username order by b.id desc")
 
-
 @Data
 @Entity
 @DynamicInsert

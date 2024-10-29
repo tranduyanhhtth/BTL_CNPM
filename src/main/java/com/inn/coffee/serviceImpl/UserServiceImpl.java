@@ -28,7 +28,6 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     UserDao userDao;
 
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try{
-            if(jwtFilter.isUser()){
+            if(jwtFilter.isAdmin()){ //.isUser()
                 Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
                 if(!optional.isEmpty()){
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));

@@ -23,8 +23,6 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
     @Autowired
     CategoryDao categoryDao;
 
