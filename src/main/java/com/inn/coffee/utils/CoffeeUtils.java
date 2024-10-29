@@ -36,6 +36,7 @@ public class CoffeeUtils {
     public static JSONArray getJsonArrayFromString(String data) throws JSONException{
         JSONArray jsonArray = new JSONArray(data);
         return jsonArray;
+
     }
 
     public static Map<String, Object> getMapFromJson(String data){
