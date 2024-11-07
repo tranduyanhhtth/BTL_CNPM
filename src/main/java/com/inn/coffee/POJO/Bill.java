@@ -17,7 +17,6 @@ import java.io.Serializable;
 @DynamicUpdate
 @Table(name = "bill")
 public class Bill implements Serializable {
-
     private static final long serialVersionId = 1L;
 
     @Id

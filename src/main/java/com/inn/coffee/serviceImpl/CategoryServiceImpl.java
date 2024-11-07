@@ -8,8 +8,6 @@ import com.inn.coffee.dao.CategoryDao;
 import com.inn.coffee.service.CategoryService;
 import com.inn.coffee.utils.CoffeeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while adding category", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -75,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
             return new ResponseEntity<>(categoryDao.findAll(), HttpStatus.OK);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while getting all category", ex);
         }
         return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -85,8 +83,8 @@ public class CategoryServiceImpl implements CategoryService {
         try{
             if(jwtFilter.isAdmin()) {
                 if(validateCategoryMap(requestMap, true)){
-                    Optional optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
-                    if(!optional.isEmpty()){
+                    Optional<Category> optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
+                    if(optional.isPresent()){
                         categoryDao.save(getCategoryFromMap(requestMap, true));
                         return CoffeeUtils.getResponseEntity("Category Updated Successfully", HttpStatus.OK);
                     }else{
@@ -99,7 +97,7 @@ public class CategoryServiceImpl implements CategoryService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while updating category", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }

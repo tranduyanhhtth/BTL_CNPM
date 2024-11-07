@@ -11,15 +11,11 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
 import org.apache.pdfbox.io.IOUtils;
 import org.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -88,7 +84,7 @@ public class BillServiceImpl implements BillService {
             }
             return CoffeeUtils.getResponseEntity("Required data not found", HttpStatus.BAD_REQUEST);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while generating report", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -158,7 +154,7 @@ public class BillServiceImpl implements BillService {
             bill.setCreateBy(jwtFilter.getCurrentUser());
             billDao.save(bill);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while inserting bill", ex);
         }
     }
 
@@ -201,7 +197,7 @@ public class BillServiceImpl implements BillService {
                 return new ResponseEntity<>(byteArray, HttpStatus.OK);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while getting pdf", ex);
         }
         return null;
     }
@@ -217,14 +213,14 @@ public class BillServiceImpl implements BillService {
     @Override
     public ResponseEntity<String> deleteBill(Integer id) {
         try{
-            Optional optional = billDao.findById(id);
-            if(!optional.isEmpty()){
+            Optional<Bill> optional = billDao.findById(id);
+            if(optional.isPresent()){
                 billDao.deleteById(id);
                 return CoffeeUtils.getResponseEntity("Bill Deleted Successfully", HttpStatus.OK);
             }
             return CoffeeUtils.getResponseEntity("Bill id does not exist", HttpStatus.OK);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while deleting bill", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }

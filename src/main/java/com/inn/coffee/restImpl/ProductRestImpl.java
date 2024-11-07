@@ -5,6 +5,7 @@ import com.inn.coffee.rest.ProductRest;
 import com.inn.coffee.service.ProductService;
 import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.wrapper.ProductWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class ProductRestImpl implements ProductRest {
 
@@ -25,7 +27,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.addNewProduct(requestMap);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in addNewProduct", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -35,7 +37,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.getAllProduct();
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getAllProduct", ex);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -45,7 +47,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.updateProduct(requestMap);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in updateProduct", ex);
         }
 
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -56,7 +58,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.deleteProduct(id);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in deleteProduct", ex);
         }
 
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,7 +69,7 @@ public class ProductRestImpl implements ProductRest {
         try{
              return productService.updateStatus(requestMap);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in updateStatus", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -77,7 +79,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.getByCategory(id);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getByCategory", ex);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -87,7 +89,7 @@ public class ProductRestImpl implements ProductRest {
         try{
             return productService.getProductById(id);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getProductById", ex);
         }
         return new ResponseEntity<>(new ProductWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserWrapper {
 
-    UserWrapper user = new UserWrapper("5657","abc@gmail.com",1,"abc","false");
-
     private Integer id;
 
     private String name;
@@ -19,11 +17,11 @@ public class UserWrapper {
 
     private String status;
 
-    public UserWrapper(String contactNumber, String email, Integer id, String name, String status) {
-        this.contactNumber = contactNumber;
-        this.email = email;
+    public UserWrapper(Integer id, String name, String email, String contactNumber, String status) {
         this.id = id;
         this.name = name;
+        this.email = email;
+        this.contactNumber = contactNumber;
         this.status = status;
     }
 }

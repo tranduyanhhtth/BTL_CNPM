@@ -8,6 +8,7 @@ import com.inn.coffee.dao.ProductDao;
 import com.inn.coffee.service.ProductService;
 import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.wrapper.ProductWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -40,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while adding product", ex);
         }
 
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
         try{
             return new ResponseEntity<>(productDao.getAllProduct(), HttpStatus.OK);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while getting all product", ex);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -90,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
             if(jwtFilter.isAdmin()){
                 if(validateProductMap(requestMap, true)){
                     Optional<Product> optional = productDao.findById(Integer.parseInt(requestMap.get("id")));
-                    if(!optional.isEmpty()){
+                    if(optional.isPresent()){
                         Product product = getProductFromMap(requestMap, true);
                         product.setStatus(optional.get().getStatus());
                         productDao.save(product);
@@ -105,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while updating product", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -114,8 +116,8 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<String> deleteProduct(Integer id) {
         try{
             if(jwtFilter.isAdmin()){
-                Optional optional = productDao.findById(id);
-                if(!optional.isEmpty()){
+                Optional<Product> optional = productDao.findById(id);
+                if(optional.isPresent()){
                     productDao.deleteById(id);
                     return CoffeeUtils.getResponseEntity("Product Deleted Successfully", HttpStatus.OK);
                 }
@@ -124,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while deleting product", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -133,8 +135,8 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
         try{
             if(jwtFilter.isAdmin()){
-                Optional optional = productDao.findById(Integer.parseInt(requestMap.get("id")));
-                if(!optional.isEmpty()){
+                Optional<Product> optional = productDao.findById(Integer.parseInt(requestMap.get("id")));
+                if(optional.isPresent()){
                     productDao.updateProductStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     return CoffeeUtils.getResponseEntity("Product Status Updated Successfully", HttpStatus.OK);
                 }
@@ -143,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while updating product status", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -153,7 +155,7 @@ public class ProductServiceImpl implements ProductService {
         try{
             return new ResponseEntity<>(productDao.getProductByCategory(id), HttpStatus.OK);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while getting product by category", ex);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -163,10 +165,8 @@ public class ProductServiceImpl implements ProductService {
         try{
             return new ResponseEntity<>(productDao.getProductById(id), HttpStatus.OK);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while getting product by id", ex);
         }
         return new ResponseEntity<>(new ProductWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }

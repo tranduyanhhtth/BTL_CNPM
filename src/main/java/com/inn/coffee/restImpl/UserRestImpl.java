@@ -5,6 +5,7 @@ import com.inn.coffee.rest.UserRest;
 import com.inn.coffee.service.UserService;
 import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.wrapper.UserWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class UserRestImpl implements UserRest {
     @Autowired
@@ -24,7 +26,7 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.signUp(requestMap);
         } catch(Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in signUp", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -34,7 +36,7 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.login(requestMap);
         } catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in login", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -44,17 +46,17 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.getAllUser();
         } catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getAllUser", ex);
         }
         return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public ResponseEntity<String> update(Map<String, String> requestMap) {
+    public ResponseEntity<String> updateUser(Map<String, String> requestMap) {
         try {
-
-        } catch(Exception ex){
-            ex.printStackTrace();
+            return userService.update(requestMap);
+        } catch (Exception ex) {
+            log.error("Exception in update", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -64,7 +66,7 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.checkToken();
         } catch(Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception in checkToken", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -74,7 +76,7 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.changePassword(requestMap);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception in changePassword", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -84,7 +86,7 @@ public class UserRestImpl implements UserRest {
         try{
             return userService.forgotPassword(requestMap);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception in forgotPassword", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -5,6 +5,7 @@ import com.inn.coffee.contents.CoffeeConstants;
 import com.inn.coffee.rest.BillRest;
 import com.inn.coffee.service.BillService;
 import com.inn.coffee.utils.CoffeeUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @RestController
 public class BillRestImpl implements BillRest {
 
@@ -25,7 +27,7 @@ public class BillRestImpl implements BillRest {
         try{
             return billService.generateReport(requestMap);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in generateReport", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -35,7 +37,7 @@ public class BillRestImpl implements BillRest {
         try {
             return billService.getBills();
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getBills", ex);
         }
         return null;
     }
@@ -45,7 +47,7 @@ public class BillRestImpl implements BillRest {
         try {
             return billService.getPdf(requestMap);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in getPdf", ex);
         }
         return null;
     }
@@ -55,11 +57,8 @@ public class BillRestImpl implements BillRest {
         try{
             return  billService.deleteBill(id);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in deleteBill", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
-
-
 }

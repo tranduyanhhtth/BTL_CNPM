@@ -12,8 +12,6 @@ import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.utils.EmailUtils;
 import com.inn.coffee.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,18 +60,14 @@ public class UserServiceImpl implements UserService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception occurred while signup", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
-        if(requestMap.containsKey("name") && requestMap.containsKey("contactNumber")
-                && requestMap.containsKey("email") && requestMap.containsKey("password")){
-            return true;
-        } else {
-            return false;
-        }
+        return requestMap.containsKey("name") && requestMap.containsKey("contactNumber")
+                && requestMap.containsKey("email") && requestMap.containsKey("password");
     }
 
     private User getUserFromMap(Map<String, String> requestMap) {
@@ -101,7 +95,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (Exception ex) {
-            log.error("{}", ex);
+            log.error("Exception occurred while login", ex);
         }
         return new ResponseEntity<String>("{\"message\":\""+"Bad Credentials."+"\"}", HttpStatus.BAD_REQUEST);
     }
@@ -115,7 +109,7 @@ public class UserServiceImpl implements UserService {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while fetching all users", ex);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -123,9 +117,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try{
-            if(jwtFilter.isAdmin()){ //.isUser()
+            if(jwtFilter.isAdmin()){
                 Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
-                if(!optional.isEmpty()){
+                if(optional.isPresent()){
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
                     return CoffeeUtils.getResponseEntity("User Status Updated Successfully", HttpStatus.OK);
@@ -136,7 +130,7 @@ public class UserServiceImpl implements UserService {
                 return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception occurred while updating user status", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -150,7 +144,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
         try{
             User userObj = userDao.findByEmail(jwtFilter.getCurrentUser());
-            if(!userObj.equals(null)){
+            if(userObj != null){
                 if(userObj.getPassword().equals(requestMap.get("oldPassword"))) {
                     userObj.setPassword(requestMap.get("newPassword"));
                     userDao.save(userObj);
@@ -160,7 +154,7 @@ public class UserServiceImpl implements UserService {
             }
             return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch(Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception occurred while changing password", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -169,25 +163,14 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
         try{
             User user = userDao.findByEmail(requestMap.get("email"));
-            if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail()));{
+            if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())){
                 emailUtils.forgotMail(user.getEmail(), "Credentials by Coffee Management System", user.getPassword());
             }
             return CoffeeUtils.getResponseEntity("Check your mail for Credentials.", HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Exception occurred while using forgot password", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private User getFromMap(Map<String, String> requestMap) {
-        User user = new User();
-        user.setName(requestMap.get("name"));
-        user.setContactNumber(requestMap.get("comtactNumber"));
-        user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
-        user.setStatus("false");
-        user.setRole("user");
-        return user;
     }
 
     public void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {

@@ -16,13 +16,14 @@ public class EmailUtils {
     @Autowired
     private JavaMailSender emailSender;
 
+    // Method to send simple message
     public void sendSimpleMessage(String to, String subject, String text, List<String> list) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("tranduyanh120124@gmail.com");
+        message.setFrom("trananhhust67@gmail.com");
         message.setTo(to);
         message.setSubject(text);
         message.setText(text);
-        if(list != null && list.size() > 0){
+        if(list != null && !list.isEmpty()){
             message.setCc(getCcArray(list));
         }
         emailSender.send(message);
@@ -36,10 +37,11 @@ public class EmailUtils {
         return cc;
     }
 
+    // Method to send HTML message
     public void forgotMail(String to, String subject, String password) throws MessagingException{
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom("tranduyanh120124@gmail.com");
+        helper.setFrom("trananhhust67@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
         String htmlMsg = "<p><b>Your Login details for Coffee Management System</b><br><b>Email: </b> " + to + " <br><b>Password: </b> " + password + "<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";

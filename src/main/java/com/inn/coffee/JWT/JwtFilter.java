@@ -27,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     Claims claims = null;
     private String userName = null;
 
+    // Check that the request contains a valid JWT token, validate the token, and set the user information into the SecurityContextHolder
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         if(httpServletRequest.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup")){

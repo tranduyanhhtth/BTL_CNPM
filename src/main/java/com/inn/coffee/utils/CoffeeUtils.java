@@ -45,9 +45,9 @@ public class CoffeeUtils {
         log.info("Inside isFileExist {}", path);
         try{
             File file = new File(path);
-            return file != null && file.exists() ? Boolean.TRUE : Boolean.FALSE;
+            return file.exists() ? Boolean.TRUE : Boolean.FALSE;
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Exception in isFileExist", ex);
         }
         return false;
     }
