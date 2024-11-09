@@ -17,6 +17,8 @@ import java.io.Serializable;
 
 @NamedQuery(name = "User.getAllAdmin", query = "select u.email from User u where u.role='admin'")
 
+@NamedQuery(name = "User.getAllShop", query = "select new com.inn.coffee.wrapper.ShopWrapper(s.id,s.name,s.address,s.contactNumber,s.status) from Shop s")
+
 @Data                   // Lombok annotation to create all the getters, setters, equals, hash, and toString methods based on fields
 @Entity                 // Specifies that the class is an entity and is mapped to a database table
 @DynamicUpdate          // Hibernate annotations that optimize SQL updates

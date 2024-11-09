@@ -4,6 +4,7 @@ import com.inn.coffee.contents.CoffeeConstants;
 import com.inn.coffee.rest.UserRest;
 import com.inn.coffee.service.UserService;
 import com.inn.coffee.utils.CoffeeUtils;
+import com.inn.coffee.wrapper.ShopWrapper;
 import com.inn.coffee.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,16 @@ public class UserRestImpl implements UserRest {
     }
 
     @Override
+    public ResponseEntity<List<ShopWrapper>> getAllShop() {
+        try{
+            return userService.getAllShop();
+        } catch (Exception ex){
+            log.error("Exception in getAllUser", ex);
+        }
+        return new ResponseEntity<List<ShopWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> updateUser(Map<String, String> requestMap) {
         try {
             return userService.update(requestMap);
@@ -87,6 +98,16 @@ public class UserRestImpl implements UserRest {
             return userService.forgotPassword(requestMap);
         } catch (Exception ex) {
             log.error("Exception in forgotPassword", ex);
+        }
+        return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> addShop(Map<String, String> requestMap) {
+        try {
+            return userService.addShop(requestMap);
+        } catch (Exception ex) {
+            log.error("Exception in addShop", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }

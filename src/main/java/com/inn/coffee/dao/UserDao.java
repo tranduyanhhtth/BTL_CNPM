@@ -1,6 +1,7 @@
 package com.inn.coffee.dao;
 
 import com.inn.coffee.POJO.User;
+import com.inn.coffee.wrapper.ShopWrapper;
 import com.inn.coffee.wrapper.UserWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,8 @@ public interface UserDao extends JpaRepository<User, Integer> {
     List<UserWrapper> getAllUser();
 
     List<String> getAllAdmin();
+
+    List<ShopWrapper> getAllShop();
 
     @Transactional
     @Modifying

@@ -1,5 +1,6 @@
 package com.inn.coffee.service;
 
+import com.inn.coffee.wrapper.ShopWrapper;
 import com.inn.coffee.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
 
@@ -21,4 +22,8 @@ public interface UserService {
     ResponseEntity<String> changePassword(Map<String, String> requestMap);
 
     ResponseEntity<String> forgotPassword(Map<String, String> requestMap);
+
+    ResponseEntity<List<ShopWrapper>> getAllShop();
+
+    ResponseEntity<String> addShop(Map<String, String> requestMap);
 }
