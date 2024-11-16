@@ -13,6 +13,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.io.IOUtils;
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class BillServiceImpl implements BillService {
+    private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     @Autowired
     JwtFilter jwtFilter;
 

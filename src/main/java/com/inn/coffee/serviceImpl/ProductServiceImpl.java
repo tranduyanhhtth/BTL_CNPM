@@ -9,6 +9,8 @@ import com.inn.coffee.service.ProductService;
 import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.wrapper.ProductWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     ProductDao productDao;
 
@@ -32,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<String> addNewProduct(Map<String, String> requestMap) {
         try{
-            if(jwtFilter.isUser()){
+            if(jwtFilter.isAdmin()){
                 if(validateProductMap(requestMap, false)){
                     productDao.save(getProductFromMap(requestMap, false));
                     return CoffeeUtils.getResponseEntity("Product Added Successfully", HttpStatus.OK);
@@ -117,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
         try{
             if(jwtFilter.isAdmin()){
                 Optional<Product> optional = productDao.findById(id);
-                if(optional.isPresent()){
+                if(!optional.isEmpty()){
                     productDao.deleteById(id);
                     return CoffeeUtils.getResponseEntity("Product Deleted Successfully", HttpStatus.OK);
                 }
@@ -136,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
         try{
             if(jwtFilter.isAdmin()){
                 Optional<Product> optional = productDao.findById(Integer.parseInt(requestMap.get("id")));
-                if(optional.isPresent()){
+                if(!optional.isEmpty()){
                     productDao.updateProductStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     return CoffeeUtils.getResponseEntity("Product Status Updated Successfully", HttpStatus.OK);
                 }
