@@ -94,11 +94,11 @@ public class BillServiceImpl implements BillService {
 
     private void addRows(PdfPTable table, Map<String, Object> data) {
         log.info("Inside addRows");
-        table.addCell((String)data.get("name"));
-        table.addCell((String)data.get("category"));
-        table.addCell((String)data.get("quantity"));
-        table.addCell(Double.toString((Double)data.get("price")));
-        table.addCell(Double.toString((Double)data.get("total")));
+        table.addCell((String) data.get("name"));
+        table.addCell((String) data.get("category"));
+        table.addCell(String.valueOf(data.get("quantity")));
+        table.addCell(String.valueOf(data.get("price")));
+        table.addCell(String.valueOf(data.get("total")));
     }
 
     private void addTableHeader(PdfPTable table) {
