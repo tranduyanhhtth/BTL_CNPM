@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class BillServiceImpl implements BillService {
-    private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     @Autowired
     JwtFilter jwtFilter;
 
@@ -55,7 +55,7 @@ public class BillServiceImpl implements BillService {
                 }
 
                 String data = "Name: "+requestMap.get("name")+"\n"+"Contact Number: "+requestMap.get("contactNumber")+
-                            "\n"+"Email: "+requestMap.get("email")+"\n"+"Payment Method: "+requestMap.get("paymentMethod");
+                        "\n"+"Email: "+requestMap.get("email")+"\n"+"Payment Method: "+requestMap.get("paymentMethod");
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(CoffeeConstants.STORE_LOCATION+"\\"+fileName+".pdf"));
 
@@ -73,14 +73,14 @@ public class BillServiceImpl implements BillService {
                 table.setWidthPercentage(100);
                 addTableHeader(table);
 
-                JSONArray jsonArray = CoffeeUtils.getJsonArrayFromString((String)requestMap.get("productDetail"));
+                JSONArray jsonArray = CoffeeUtils.getJsonArrayFromString((String)requestMap.get("productDetails"));
                 for(int i = 0; i < jsonArray.length(); i++){
                     addRows(table, CoffeeUtils.getMapFromJson(jsonArray.getString(i)));
                 }
                 document.add(table);
 
                 Paragraph footer = new Paragraph("Total: "+requestMap.get("totalAmount")+"\n"
-                            + "Thank you for visiting. Please visit again!!", getFont("Data"));
+                        + "Thank you for visiting. Please visit again!!", getFont("Data"));
                 document.add(footer);
                 document.close();
                 return new ResponseEntity<>("{\"uuid\":\"" + fileName + "\"}", HttpStatus.OK);
@@ -153,7 +153,7 @@ public class BillServiceImpl implements BillService {
             bill.setContactNumber((String)requestMap.get("contactNumber"));
             bill.setPaymentMethod((String)requestMap.get("paymentMethod"));
             bill.setTotal(Integer.parseInt((String)requestMap.get("totalAmount")));
-            bill.setProductDetail((String)requestMap.get("productDetail"));
+            bill.setProductDetail((String)requestMap.get("productDetails"));
             bill.setCreateBy(jwtFilter.getCurrentUser());
             billDao.save(bill);
         }catch (Exception ex){
@@ -190,7 +190,7 @@ public class BillServiceImpl implements BillService {
                 return new ResponseEntity<>(byteArray, HttpStatus.BAD_REQUEST);
             }
             String filePath = CoffeeConstants.STORE_LOCATION + "\\"+(String)requestMap.get("uuid")+".pdf";
-            if(CoffeeUtils.isFileExist(filePath)){
+            if (CoffeeUtils.isFileExist(filePath)){
                 byteArray = getByteArray(filePath);
                 return new ResponseEntity<>(byteArray, HttpStatus.OK);
             }else{

@@ -18,13 +18,13 @@ import java.util.Map;
 
 @Slf4j
 public class CoffeeUtils {
-    private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
+    //private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
 
     private CoffeeUtils(){
 
     }
     public static ResponseEntity<String> getResponseEntity(String responseMessage, HttpStatus httpStatus){
-        return new ResponseEntity<String>("{\"messag\":\""+responseMessage+"\"}", httpStatus);
+        return new ResponseEntity<String>("{\"message\":\""+responseMessage+"\"}", httpStatus);
     }
 
     public static String getUUID(){
@@ -36,6 +36,7 @@ public class CoffeeUtils {
     public static JSONArray getJsonArrayFromString(String data) throws JSONException{
         JSONArray jsonArray = new JSONArray(data);
         return jsonArray;
+
     }
 
     public static Map<String, Object> getMapFromJson(String data){
@@ -49,7 +50,7 @@ public class CoffeeUtils {
         log.info("Inside isFileExist {}", path);
         try{
             File file = new File(path);
-            return file.exists() ? Boolean.TRUE : Boolean.FALSE;
+            return (file != null && file.exists()) ? Boolean.TRUE : Boolean.FALSE;
         }catch (Exception ex){
             log.error("Exception in isFileExist", ex);
         }

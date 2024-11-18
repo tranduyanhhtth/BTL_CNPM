@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 public class ProductRestImpl implements ProductRest {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductRestImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(ProductRestImpl.class);
     @Autowired
     ProductService productService;
 

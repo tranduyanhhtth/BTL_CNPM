@@ -9,6 +9,6 @@ import java.util.Map;
 @RequestMapping(path = "/dashboard")
 public interface DashboardRest {
 
-    @GetMapping(path = "details")
+    @GetMapping(path = "/details")
     ResponseEntity<Map<String, Object>> getCount();
 }
