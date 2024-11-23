@@ -18,8 +18,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     List<String> getAllAdmin();
 
-    List<ShopWrapper> getAllShop();
-
     @Transactional
     @Modifying
     void updateStatus(@Param("status") String status, @Param("id") Integer id);

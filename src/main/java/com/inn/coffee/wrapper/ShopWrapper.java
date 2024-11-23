@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShopWrapper {
 
-    private Integer id;
+    private String id;
 
     private String name;
 
@@ -17,7 +17,7 @@ public class ShopWrapper {
 
     private String status;
 
-    public ShopWrapper(Integer id, String name, String address, String contactNumber, String status) {
+    public ShopWrapper(String id, String name, String address, String contactNumber, String status) {
         this.id = id;
         this.name = name;
         this.address = address;

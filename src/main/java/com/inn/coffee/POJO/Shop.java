@@ -8,18 +8,25 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.io.Serial;
 import java.io.Serializable;
 
+@NamedQuery(name = "Shop.getAllShop", query = "select new com.inn.coffee.wrapper.ShopWrapper(s.id,s.name,s.address,s.contactNumber,s.status) from Shop s")
+
+@NamedQuery(name = "Shop.updateShopStatus", query = "update Shop s set s.status=:status where s.id=:id")
+
+@NamedQuery(name = "Shop.getShopBills", query = "select new com.inn.coffee.wrapper.BillWrapper(b.id,b.name,b.uuid,b.total,b.paymentMethod) from Bill b, Shop s where LEFT(b.uuid, 2) = s.id")
+
 @Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "shop")
 public class Shop implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L; // Make sure that the object before and after serialization is one
+
+    public static final Long serialVersionUid = 123456L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -33,11 +40,11 @@ public class Shop implements Serializable {
     @Column(name = "status")
     private String status;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

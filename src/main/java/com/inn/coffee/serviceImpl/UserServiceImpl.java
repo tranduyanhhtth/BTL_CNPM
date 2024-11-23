@@ -182,60 +182,6 @@ public class UserServiceImpl implements UserService {
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
-    public ResponseEntity<List<ShopWrapper>> getAllShop() {
-        try{
-            if(jwtFilter.isAdmin()){
-                return new ResponseEntity<>(userDao.getAllShop(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex){
-            log.error("Exception occurred while fetching all users", ex);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Override
-    public ResponseEntity<String> addShop(Map<String, String> requestMap) {
-        log.info("Inside addShop {}", requestMap);
-        try {
-            if (jwtFilter.isAdmin()) {
-                if (validateAddShopMap(requestMap)) {
-                    Shop shop = shopDao.findByAddress(requestMap.get("address"));
-                    if (Objects.isNull(shop)) {
-                        shopDao.save(getShopFromMap(requestMap));
-                        return CoffeeUtils.getResponseEntity("Shop Added Successfully.", HttpStatus.OK);
-                    } else {
-                        return CoffeeUtils.getResponseEntity("Shop already exits.", HttpStatus.BAD_REQUEST);
-                    }
-                } else {
-                    return CoffeeUtils.getResponseEntity("Shop already exits.", HttpStatus.BAD_REQUEST);
-                }
-            } else {
-                return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex) {
-            log.error("Exception occurred while addShop", ex);
-        }
-        return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private boolean validateAddShopMap(Map<String, String> requestMap) {
-        return requestMap.containsKey("id") && requestMap.containsKey("name") && requestMap.containsKey("address")
-                && requestMap.containsKey("contactNumber") && requestMap.containsKey("status");
-    }
-
-    private Shop getShopFromMap(Map<String, String> requestMap) {
-        Shop shop = new Shop();
-        shop.setId(Integer.parseInt(requestMap.get("id")));
-        shop.setName(requestMap.get("name"));
-        shop.setAddress(requestMap.get("address"));
-        shop.setContactNumber(requestMap.get("contactNumber"));
-        shop.setStatus(requestMap.get("status"));
-        return shop;
-    }
-
     public void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
         allAdmin.remove(jwtFilter.getCurrentUser());
         if(status != null && status.equalsIgnoreCase("true")) {

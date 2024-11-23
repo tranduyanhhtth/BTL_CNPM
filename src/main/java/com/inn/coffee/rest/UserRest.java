@@ -20,9 +20,6 @@ public interface UserRest {
     @GetMapping(path = "/getUser")
     public ResponseEntity<List<UserWrapper>> getAllUser();
 
-    @GetMapping(path = "/getShop")
-    public ResponseEntity<List<ShopWrapper>> getAllShop();
-
     @PostMapping(path = "/update")
     public ResponseEntity<String> updateUser(@RequestBody(required = true) Map<String, String> requestMap);
 
@@ -34,7 +31,4 @@ public interface UserRest {
 
     @PostMapping(path = "/forgotPassword")
     ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> requestMap);
-
-    @PostMapping(path = "/addShop")
-    ResponseEntity<String> addShop(@RequestBody Map<String, String> requestMap);
 }
