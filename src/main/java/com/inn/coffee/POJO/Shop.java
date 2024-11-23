@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Shop.updateShopStatus", query = "update Shop s set s.status=:status where s.id=:id")
 
-@NamedQuery(name = "Shop.getShopBills", query = "select new com.inn.coffee.wrapper.BillWrapper(b.id,b.name,b.uuid,b.total,b.paymentMethod) from Bill b, Shop s where LEFT(b.uuid, 2) = s.id")
+@NamedQuery(name = "Shop.getShopBills", query = "select new com.inn.coffee.wrapper.BillWrapper(b.id,b.name,b.uuid,b.total,b.paymentMethod) from Bill b, Shop s where LEFT(b.uuid, 2) = LEFT(s.id, 2)")
 
 @Data
 @Entity
