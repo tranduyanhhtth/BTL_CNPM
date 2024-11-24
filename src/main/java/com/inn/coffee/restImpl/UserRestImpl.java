@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class UserRestImpl implements UserRest {
-   // private static final Logger log = LoggerFactory.getLogger(UserRestImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserRestImpl.class);
     @Autowired
     UserService userService;
 

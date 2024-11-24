@@ -27,6 +27,10 @@ public class Bill implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_fk", nullable = false)
+    private Shop shop;
+
     @Column(name = "name")
     private String name;
 
@@ -118,5 +122,13 @@ public class Bill implements Serializable {
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }

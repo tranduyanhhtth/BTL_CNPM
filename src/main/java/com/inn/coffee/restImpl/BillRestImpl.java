@@ -21,6 +21,7 @@ import java.util.Objects;
 @RestController
 public class BillRestImpl implements BillRest {
 
+    private static final Logger log = LoggerFactory.getLogger(BillRestImpl.class);
     //private static final Logger log = LoggerFactory.getLogger(BillRestImpl.class);
     @Autowired
     BillService billService;

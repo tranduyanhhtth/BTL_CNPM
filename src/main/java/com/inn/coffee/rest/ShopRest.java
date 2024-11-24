@@ -3,10 +3,7 @@ package com.inn.coffee.rest;
 import com.inn.coffee.wrapper.BillWrapper;
 import com.inn.coffee.wrapper.ShopWrapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +19,9 @@ public interface ShopRest {
     @PostMapping(path = "/updateStatus")
     ResponseEntity<String> updateStatus(@RequestBody Map<String, String> requestMap);
 
-    @GetMapping(path = "/getShopBills")
-    ResponseEntity<List<BillWrapper>> getShopBills();
+    @GetMapping(path = "/getShopBills/{id}")
+    ResponseEntity<Map<String, Object>> getShopBills(@PathVariable Integer id);
+
+    @PostMapping(path = "/delete/{id}")
+    ResponseEntity<String> deleteShop(@PathVariable Integer id);
 }

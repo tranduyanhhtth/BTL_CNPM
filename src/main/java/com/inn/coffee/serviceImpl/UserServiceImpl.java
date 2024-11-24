@@ -31,7 +31,7 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    //private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     UserDao userDao;
 

@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 public class CategoryRestImpl implements CategoryRest {
 
-    //private static final Logger log = LoggerFactory.getLogger(CategoryRestImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CategoryRestImpl.class);
     @Autowired
     CategoryService categoryService;
 

@@ -18,6 +18,7 @@ import java.util.Map;
 
 @Slf4j
 public class CoffeeUtils {
+    private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
     //private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
 
     private CoffeeUtils(){
@@ -27,10 +28,10 @@ public class CoffeeUtils {
         return new ResponseEntity<String>("{\"message\":\""+responseMessage+"\"}", httpStatus);
     }
 
-    public static String getUUID(){
+    public static String getUUID(String shopId){
         Date date = new Date();
         long time = date.getTime();
-        return "BILL-"+time;
+        return "BILL-"+time +"ID"+shopId;
     }
 
     public static JSONArray getJsonArrayFromString(String data) throws JSONException{

@@ -2,6 +2,7 @@ package com.inn.coffee.serviceImpl;
 
 import com.inn.coffee.JWT.JwtFilter;
 import com.inn.coffee.POJO.Bill;
+import com.inn.coffee.POJO.Shop;
 import com.inn.coffee.contents.CoffeeConstants;
 import com.inn.coffee.dao.BillDao;
 import com.inn.coffee.service.BillService;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class BillServiceImpl implements BillService {
+    private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     //private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     @Autowired
     JwtFilter jwtFilter;
@@ -49,7 +51,7 @@ public class BillServiceImpl implements BillService {
                     fileName = (String)requestMap.get("uuid");
 
                 }else{
-                    fileName = CoffeeUtils.getUUID();
+                    fileName = CoffeeUtils.getUUID((String)requestMap.get("shopId"));
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
@@ -146,6 +148,9 @@ public class BillServiceImpl implements BillService {
 
     private void insertBill(Map<String, Object> requestMap) {
         try{
+            Shop shop = new Shop();
+            shop.setId(Integer.parseInt((String)requestMap.get("shopId")));
+
             Bill bill = new Bill();
             bill.setUuid((String)requestMap.get("uuid"));
             bill.setName((String)requestMap.get("name"));
@@ -154,6 +159,7 @@ public class BillServiceImpl implements BillService {
             bill.setPaymentMethod((String)requestMap.get("paymentMethod"));
             bill.setTotal(Integer.parseInt((String)requestMap.get("totalAmount")));
             bill.setProductDetail((String)requestMap.get("productDetails"));
+            bill.setShop(shop);
             bill.setCreateBy(jwtFilter.getCurrentUser());
             billDao.save(bill);
         }catch (Exception ex){
@@ -167,7 +173,8 @@ public class BillServiceImpl implements BillService {
                 requestMap.containsKey("email") &&
                 requestMap.containsKey("paymentMethod") &&
                 requestMap.containsKey("productDetails") &&
-                requestMap.containsKey("totalAmount");
+                requestMap.containsKey("totalAmount") &&
+                requestMap.containsKey("shopId");
     }
 
     @Override

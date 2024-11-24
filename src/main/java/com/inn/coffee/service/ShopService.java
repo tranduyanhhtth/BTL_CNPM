@@ -16,5 +16,7 @@ public interface ShopService {
 
     ResponseEntity<String> updateStatus(Map<String, String> requestMap);
 
-    ResponseEntity<List<BillWrapper>> getShopBills();
+    ResponseEntity<Map<String, Object>> getShopBills(Integer id);
+
+    ResponseEntity<String> deleteShop(Integer id);
 }

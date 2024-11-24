@@ -12,7 +12,18 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Shop.updateShopStatus", query = "update Shop s set s.status=:status where s.id=:id")
 
-@NamedQuery(name = "Shop.getShopBills", query = "select new com.inn.coffee.wrapper.BillWrapper(b.id,b.name,b.uuid,b.total,b.paymentMethod) from Bill b, Shop s where LEFT(b.uuid, 2) = LEFT(s.id, 2)")
+@NamedQuery(
+        name = "Shop.getShopBills",
+        query = "select new com.inn.coffee.wrapper.BillWrapper(b.id,b.name,b.uuid,b.total,b.paymentMethod) " +
+                "from Bill b where b.shop.id=:id"
+)
+
+@NamedQuery(name = "Shop.deleteShop", query = "delete from Bill b where b.shop.id=:id")
+
+
+@NamedQuery(name = "Shop.getTotalAmount", query = "select SUM(b.total) from Bill b where b.shop.id=:id")
+
+
 
 @Data
 @Entity
@@ -26,7 +37,7 @@ public class Shop implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -40,11 +51,11 @@ public class Shop implements Serializable {
     @Column(name = "status")
     private String status;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
