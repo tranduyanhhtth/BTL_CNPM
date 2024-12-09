@@ -1,6 +1,5 @@
 package com.inn.coffee.wrapper;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 
 @Data

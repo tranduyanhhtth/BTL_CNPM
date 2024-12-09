@@ -9,8 +9,6 @@ import com.inn.coffee.utils.CoffeeUtils;
 import com.inn.coffee.wrapper.BillWrapper;
 import com.inn.coffee.wrapper.ShopWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,7 @@ import java.util.*;
 @Service
 public class ShopServiceImpl implements ShopService {
 
-    private static final Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
     @Autowired
     ShopDao shopDao;
 
@@ -149,6 +147,33 @@ public class ShopServiceImpl implements ShopService {
             }
         }catch (Exception ex){
             log.error("Exception occurred while deleting shop", ex);
+        }
+        return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateShop(Integer id, Map<String, String> requestMap) {
+        try{
+            if(jwtFilter.isAdmin()){
+                if(validateShopMap(requestMap, false)){
+                    Optional<Shop> optional = shopDao.findById(id);
+                    if(optional.isPresent()){
+                        Shop shop = getShopFromMap(requestMap, false);
+                        shop.setId(id);
+                        shop.setStatus(optional.get().getStatus());
+                        shopDao.save(shop);
+                        return CoffeeUtils.getResponseEntity("Shop Updated Successfully", HttpStatus.OK);
+                    }else{
+                        return CoffeeUtils.getResponseEntity("Shop id does not exist", HttpStatus.OK);
+                    }
+                }else{
+                    return CoffeeUtils.getResponseEntity(CoffeeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                return CoffeeUtils.getResponseEntity(CoffeeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            log.error("Exception occurred while updating product", ex);
         }
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }

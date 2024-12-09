@@ -18,7 +18,6 @@ import java.util.Map;
 
 @Slf4j
 public class CoffeeUtils {
-    private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
     //private static final Logger log = LoggerFactory.getLogger(CoffeeUtils.class);
 
     private CoffeeUtils(){

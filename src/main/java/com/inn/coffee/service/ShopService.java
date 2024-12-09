@@ -1,7 +1,5 @@
 package com.inn.coffee.service;
 
-import com.inn.coffee.POJO.Bill;
-import com.inn.coffee.wrapper.BillWrapper;
 import com.inn.coffee.wrapper.ShopWrapper;
 import org.springframework.http.ResponseEntity;
 
@@ -19,4 +17,6 @@ public interface ShopService {
     ResponseEntity<Map<String, Object>> getShopBills(Integer id);
 
     ResponseEntity<String> deleteShop(Integer id);
+
+    ResponseEntity<String> updateShop(Integer id, Map<String, String> requestMap);
 }

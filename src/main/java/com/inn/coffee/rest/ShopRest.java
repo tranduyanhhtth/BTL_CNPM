@@ -1,6 +1,5 @@
 package com.inn.coffee.rest;
 
-import com.inn.coffee.wrapper.BillWrapper;
 import com.inn.coffee.wrapper.ShopWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,4 +23,7 @@ public interface ShopRest {
 
     @PostMapping(path = "/delete/{id}")
     ResponseEntity<String> deleteShop(@PathVariable Integer id);
+
+    @PostMapping(path = "/updateShop/{id}")
+    ResponseEntity<String> updateShop(@PathVariable Integer id, @RequestBody Map<String, String> requestMap);
 }

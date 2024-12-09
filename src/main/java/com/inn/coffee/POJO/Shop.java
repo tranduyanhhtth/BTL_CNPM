@@ -20,10 +20,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Shop.deleteShop", query = "delete from Bill b where b.shop.id=:id")
 
-
 @NamedQuery(name = "Shop.getTotalAmount", query = "select SUM(b.total) from Bill b where b.shop.id=:id")
-
-
 
 @Data
 @Entity

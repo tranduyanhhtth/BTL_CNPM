@@ -28,6 +28,4 @@ public interface ShopDao extends JpaRepository<Shop, Integer> {
     @Transactional
     @Modifying
     void deleteShop(@Param("id") Integer id);
-
-
 }

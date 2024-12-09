@@ -33,7 +33,6 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class BillServiceImpl implements BillService {
-    private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     //private static final Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
     @Autowired
     JwtFilter jwtFilter;

@@ -21,8 +21,7 @@ import java.util.Map;
 @RestController
 public class ProductRestImpl implements ProductRest {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductRestImpl.class);
-    //private static final Logger log = LoggerFactory.getLogger(ProductRestImpl.class);
+   //private static final Logger log = LoggerFactory.getLogger(ProductRestImpl.class);
     @Autowired
     ProductService productService;
 
@@ -53,7 +52,6 @@ public class ProductRestImpl implements ProductRest {
         }catch (Exception ex){
             log.error("Exception in updateProduct", ex);
         }
-
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -64,7 +62,6 @@ public class ProductRestImpl implements ProductRest {
         }catch (Exception ex){
             log.error("Exception in deleteProduct", ex);
         }
-
         return CoffeeUtils.getResponseEntity(CoffeeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
