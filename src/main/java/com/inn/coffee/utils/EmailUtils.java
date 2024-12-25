@@ -21,7 +21,7 @@ public class EmailUtils {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("trananhhust67@gmail.com");
         message.setTo(to);
-        message.setSubject(text);
+        message.setSubject(subject);
         message.setText(text);
         if(list != null && !list.isEmpty()){
             message.setCc(getCcArray(list));

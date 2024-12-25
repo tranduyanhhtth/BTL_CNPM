@@ -30,11 +30,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ResponseEntity<List<ShopWrapper>> getAllShop() {
         try{
-            if(jwtFilter.isAdmin()){
-                return new ResponseEntity<>(shopDao.getAllShop(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            }
+            return new ResponseEntity<>(shopDao.getAllShop(), HttpStatus.OK);
         } catch (Exception ex){
             log.error("Exception occurred while fetching all users", ex);
         }

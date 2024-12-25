@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     Claims claims = null;
     private String userName = null;
 
-    // Check that the request contains a valid JWT token, validate the token, and set the user information into the SecurityContextHolder
+    // Check that the request Http contains a valid JWT token, validate the token, and set the user information into the SecurityContextHolder
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         if(httpServletRequest.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup")){
@@ -37,13 +37,14 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = null;
 
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
-                token = authorizationHeader.substring(7);
-                userName = jwtUtil.extractUsername(token);
-                claims = jwtUtil.extractAllClaims(token);
+                token = authorizationHeader.substring(7); // Trích xuất token từ header
+                userName = jwtUtil.extractUsername(token);          // Trích xuất tên người dùng từ token
+                claims = jwtUtil.extractAllClaims(token);           // Trích xuất tất cả các claims từ token
             }
             if(userName != null && SecurityContextHolder.getContext().getAuthentication()==null){
-                UserDetails userDetails = service.loadUserByUsername(userName);
-                if(jwtUtil.validateToken(token,userDetails)){
+                UserDetails userDetails = service.loadUserByUsername(userName);  // Tải thông tin người dùng
+                if(jwtUtil.validateToken(token,userDetails)){                    // Kiểm tra tính hợp lệ của token
+                    // Nếu token hợp lệ, tạo đối tượng xác thực và lưu vào SecurityContext
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
